@@ -6,6 +6,8 @@
 
 #define N_CORE 4
 #define N_ITER 1000000000
+
+
 void * result(void *arg){
 	double * sum = arg;
 	int m = 0;
@@ -24,6 +26,16 @@ void * result(void *arg){
 }
 
 int main(int argc, char *argv[]){
+	if(argc!=2){
+		printf("Número de entradas incorreto.\n");
+		exit(1);
+	}
+	FILE *fp;
+	fp = fopen(argv[1], "w");
+	if(fp == NULL){
+		printf("Erro de abertura do arquivo.\n");
+		exit(1);
+	}
 	srand(time(NULL));
 	pthread_t thread_id[N_CORE];
 	void * thread_res;
@@ -42,7 +54,7 @@ int main(int argc, char *argv[]){
 		result = result + thread_result[i];
 
 	}
-	printf("\n %lf \n", 4*result);
+	fprintf(fp, "%lf\n", 4*result);
+	fclose(fp);
 	return 0;
-
 }
