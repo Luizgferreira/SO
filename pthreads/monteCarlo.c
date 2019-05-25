@@ -4,20 +4,14 @@
 #include <time.h>
 #include <pthread.h>
 
-
-void * routine(void *arg){
-	int * k = arg; 
-	printf("Argumento: %d\n", *k);
-	*k = 20;
-	pthread_exit(arg);
-}
+#define N_CORE 4
 
 void * result(void *arg){
 	double * sum = arg;
 	int m = 0;
 	int i;
 	double x, y, result;
-	for(i = 0; i<500000000; i++){
+	for(i = 0; i<250000000; i++){
 		x = (double)rand()/(double)(RAND_MAX/1);
 		y = (double)rand()/(double)(RAND_MAX/1);
 		result = pow(x, 2.0) + pow(y, 2.0);
@@ -31,19 +25,21 @@ void * result(void *arg){
 
 int main(int argc, char *argv[]){
 	srand(time(NULL));
-	pthread_t thread_idA;
-	pthread_t thread_idB;
+	pthread_t thread_id[N_CORE];
 	void * thread_res;
-	double r1, r2;
-	//long* x;
-	double i;
-	double * x = &i;
-	double i2;
-	double * x2 = &i2;
-	r1 = pthread_create (&thread_idA, NULL, result, (void*)x);
-	r2 = pthread_create (&thread_idB, NULL, result, (void*)x2);
-	r1 = pthread_join (thread_idA, &thread_res);
-	r2 = pthread_join (thread_idB, &thread_res);
-	printf("Argumento: %lf\n", 4*(i+i2));
+	double thread[N_CORE];
+	double thread_result[N_CORE];
+	//criar threads
+	for (int i = 0; i < N_CORE; i++){
+		thread[i] = pthread_create(&thread_id[i], NULL, result, (void*)&thread_result[i]);
+		printf("Thread %d criada \n", i);
+	}
+	//finalizar threads
+	for (int i = 0; i < N_CORE; i++){
+		thread[i] = pthread_join(thread_id[i], &thread_res);
+		printf("Thread %d finalizada \n", i);
+	}
+	printf("\n %lf", thread_result[0]+thread_result[1]+thread_result[2]+thread_result[3]);
+	return 0;
 
 }
