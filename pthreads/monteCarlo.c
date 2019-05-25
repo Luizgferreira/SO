@@ -5,13 +5,13 @@
 #include <pthread.h>
 
 #define N_CORE 4
-
+#define N_ITER 1000000000
 void * result(void *arg){
 	double * sum = arg;
 	int m = 0;
 	int i;
 	double x, y, result;
-	for(i = 0; i<250000000; i++){
+	for(i = 0; i<N_ITER/N_CORE; i++){
 		x = (double)rand()/(double)(RAND_MAX/1);
 		y = (double)rand()/(double)(RAND_MAX/1);
 		result = pow(x, 2.0) + pow(y, 2.0);
@@ -19,7 +19,7 @@ void * result(void *arg){
 			m = m + 1;
 		}
 	}
-	*sum = (double)m/i;
+	*sum = (double)m/N_ITER;
 	pthread_exit(arg);
 }
 
@@ -34,12 +34,15 @@ int main(int argc, char *argv[]){
 		thread[i] = pthread_create(&thread_id[i], NULL, result, (void*)&thread_result[i]);
 		printf("Thread %d criada \n", i);
 	}
+	double result = 0;
 	//finalizar threads
 	for (int i = 0; i < N_CORE; i++){
 		thread[i] = pthread_join(thread_id[i], &thread_res);
 		printf("Thread %d finalizada \n", i);
+		result = result + thread_result[i];
+
 	}
-	printf("\n %lf", thread_result[0]+thread_result[1]+thread_result[2]+thread_result[3]);
+	printf("\n %lf \n", 4*result);
 	return 0;
 
 }
