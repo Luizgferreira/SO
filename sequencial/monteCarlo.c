@@ -3,7 +3,7 @@
 #include <time.h>
 #include <math.h>
 
-#define N_ITER 10000
+#define N_ITER 1000000000
 
 int main(int argc, char *argv[]){
 	if(argc!=2){

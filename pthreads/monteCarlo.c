@@ -3,6 +3,8 @@
 #include <math.h>
 #include <time.h>
 #include <pthread.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define N_CORE 4
 #define N_ITER 1000000000
@@ -10,12 +12,15 @@
 
 void * result(void *arg){
 	double * sum = arg;
+	//rand_r(sum);
 	int m = 0;
 	int i;
+	unsigned int *mystate = arg;
+	*mystate = time(NULL) ^ getpid() ^ pthread_self();
 	double x, y, result;
-	for(i = 0; i<N_ITER/N_CORE; i++){
-		x = (double)rand()/(double)(RAND_MAX/1);
-		y = (double)rand()/(double)(RAND_MAX/1);
+	for(i = 0; i<1000000000; i++){
+		x = (double)rand_r(mystate)/(double)(RAND_MAX/1);
+		y = (double)rand_r(mystate)/(double)(RAND_MAX/1);
 		result = pow(x, 2.0) + pow(y, 2.0);
 		if(result<1){
 			m = m + 1;
@@ -36,13 +41,14 @@ int main(int argc, char *argv[]){
 		printf("Erro de abertura do arquivo.\n");
 		exit(1);
 	}
-	srand(time(NULL));
+	//srand(time(NULL));
 	pthread_t thread_id[N_CORE];
 	void * thread_res;
 	double thread[N_CORE];
 	double thread_result[N_CORE];
 	//criar threads
 	for (int i = 0; i < N_CORE; i++){
+		thread_result[i] = i;
 		thread[i] = pthread_create(&thread_id[i], NULL, result, (void*)&thread_result[i]);
 		printf("Thread %d criada \n", i);
 	}
@@ -54,7 +60,7 @@ int main(int argc, char *argv[]){
 		result = result + thread_result[i];
 
 	}
-	fprintf(fp, "%lf\n", 4*result);
+	fprintf(fp, "%lf\n", result);
 	fclose(fp);
 	return 0;
 }
