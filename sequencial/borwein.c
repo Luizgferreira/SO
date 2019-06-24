@@ -4,7 +4,7 @@
 #include <math.h>
 #include <gmp.h>
 
-#define N_ITER 10000000
+#define N_ITER 1000000
 
 int main(int argc, char *argv[]){
 	if(argc!=3){

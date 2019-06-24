@@ -4,7 +4,7 @@
 #include <math.h>
 #include <gmp.h>
 
-#define N_ITER 1000
+#define N_ITER 1000000
 
 int main(int argc, char *argv[]){
 	if(argc!=3){
@@ -20,15 +20,15 @@ int main(int argc, char *argv[]){
 	srand(time(NULL));
 	
 	mpf_t t_gmp, p_gmp, t_aux, pi, aux, a, a_ant, b;
-
-	mpf_init2(p_gmp, 1000);
-	mpf_init2(t_gmp, 1000);
-	mpf_init2(t_aux, 1000);
-	mpf_init2(pi, 1000);
-	mpf_init2(aux, 1000);
-	mpf_init2(a, 1000);
-	mpf_init2(a_ant, 1000);
-	mpf_init2(b, 1000);
+	
+	mpf_init(p_gmp);
+	mpf_init(t_gmp);
+	mpf_init(t_aux);
+	mpf_init(pi);
+	mpf_init(aux);
+	mpf_init(a);
+	mpf_init(a_ant);
+	mpf_init(b);
 	
 	mpf_set_d(a, 1.0);
 	mpf_set_d(b, 0.5);

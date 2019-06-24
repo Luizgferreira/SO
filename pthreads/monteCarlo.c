@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
 		result = result + thread_result[i];
 
 	}
-	fprintf(fp, "%lf\n", result);
+	fprintf(fp, "%lf\n", 4*result);
 	fclose(fp);
 	return 0;
 }

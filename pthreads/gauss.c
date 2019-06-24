@@ -5,7 +5,7 @@
 #include <math.h>
 
 #define n_t 3
-#define n_iter 100
+#define n_iter 1000000
 
 void *threadA(void* arg){
 	mpf_t *res = arg;

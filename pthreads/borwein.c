@@ -5,7 +5,7 @@
 #include <gmp.h>
 #include <pthread.h>
 
-#define N_ITER 10000000
+#define N_ITER 1000000
 
 
 struct dados_threadA
@@ -97,8 +97,7 @@ int main(int argc, char *argv[]){
 	mpf_t pi;
 	mpf_init(pi);
 	mpf_ui_div(pi, 1.0, data.a);
-	mpf_out_str (stdout, 10, 0, pi);
-	printf("\n");
+	mpf_out_str (fp, 10, 0, pi);
 	mpf_clear(y);
 	mpf_clear(y_k1);
 	mpf_clear(y_k2);	

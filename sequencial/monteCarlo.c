@@ -3,15 +3,15 @@
 #include <time.h>
 #include <math.h>
 
-#define N_ITER 1000000000
+#define N_ITER 100000000
 
 int main(int argc, char *argv[]){
-	if(argc!=2){
+	if(argc!=3){
 		printf("Número de entradas incorreto.\n");
 		exit(1);
 	}
 	FILE *fp;
-	fp = fopen(argv[1], "w");
+	fp = fopen(argv[2], "w");
 	if(fp == NULL){
 		printf("Erro de abertura do arquivo.\n");
 		exit(1);
